@@ -4,7 +4,7 @@ version: '2.3'
 
 services:
   webapp:
-    image: unifi-controller:latest
+    image: unifi-controller:lts
     build:
       context: ..
       args:
