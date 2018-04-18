@@ -4,9 +4,8 @@ set -eu
 HOOKS_DIR=$(dirname "${BASH_SOURCE[0]}")
 VERSION=$(cat "${HOOKS_DIR}/../VERSION")
 VERSION_MINOR=${VERSION%.*}
-VERSION_MAJOR=${VERSION%%.*}
 
-for ALT_TAG in {$VERSION,$VERSION_MINOR,$VERSION_MAJOR}; do
+for ALT_TAG in {$VERSION,$VERSION_MINOR}; do
   docker tag \
     "${IMAGE_NAME}" \
     "${DOCKER_REPO}:${ALT_TAG}"
