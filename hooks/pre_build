@@ -1,0 +1,9 @@
+#!/bin/bash
+set -eu
+
+export DOCKER_CLI_EXPERIMENTAL=enabled
+
+update-binfmts --import
+update-binfmts --enable
+docker buildx create --use --name qemu
+docker buildx inspect --bootstrap
