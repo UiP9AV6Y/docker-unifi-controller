@@ -1,6 +1,10 @@
 #!/bin/bash
 set -eu
 
+modprobe binfmt_misc
+mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc
+echo 1 > /proc/sys/fs/binfmt_misc/status
+
 apt-get update -qq
 apt-get install -y --no-install-recommends \
   qemu-user-static \
