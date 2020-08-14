@@ -6,7 +6,27 @@ RUN set -xe; \
     && useradd --uid 1000 --gid unifi --shell /bin/sh --home ${UNIFI_HOME} --create-home unifi
 
 WORKDIR ${UNIFI_HOME}
-EXPOSE 8080 8443 8880 8843 6789 3478/udp 5656-5699/udp 10001/udp
+EXPOSE \
+  # Port used for STUN.
+  3478/udp \
+  # Port used for remote syslog capture.
+  5514/udp \
+  # Port used for device and controller communication.
+  8080 \
+  # Port used for controller GUI/API as seen in a web browser
+  8443 \
+  # Port used for HTTP portal redirection.
+  8880 \
+  # Port used for HTTPS portal redirection.
+  8843 \
+  # Port used for UniFi mobile speed test.
+  6789 \
+  # Ports used by AP-EDU broadcasting.
+  5656-5699/udp \
+  # Port used for device discovery
+  10001/udp \
+  # Port used for "Make controller discoverable on L2 network" in controller settings.
+  1900/udp
 
 ARG UNIFI_VERSION
 ENV UNIFI_VERSION=${UNIFI_VERSION}
