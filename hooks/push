@@ -1,0 +1,5 @@
+#!/bin/bash
+set -eu
+
+# noop as the build hook builds and deploys the images
+:

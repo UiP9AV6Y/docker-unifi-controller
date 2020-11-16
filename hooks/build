@@ -2,15 +2,29 @@
 set -eu
 
 HOOKS_DIR=$(dirname "${BASH_SOURCE[0]}")
+CONTEXT_ROOT=$(dirname "$DOCKERFILE_PATH")
 BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
 VCS_URL=$(git config --get remote.origin.url)
 VCS_REF=$(git rev-parse --short HEAD)
-VERSION=$(cat "${HOOKS_DIR}/../VERSION")
+VERSION=$(cat "${CONTEXT_ROOT}/VERSION")
+PLATFORMS=$(paste -s -d, "${CONTEXT_ROOT}/PLATFORMS")
+VERSION_MINOR=${VERSION%.*}
+VERSION_MAJOR=${VERSION%%.*}
 
-docker build \
-  --build-arg UNIFI_VERSION=$VERSION \
-  --build-arg VCS_URL=$VCS_URL \
-  --build-arg VCS_REF=$VCS_REF \
-  --build-arg BUILD_DATE=$BUILD_DATE \
-  -t $IMAGE_NAME \
-  .
+export DOCKER_CLI_EXPERIMENTAL=enabled
+
+for IMAGE_TAG in {$DOCKER_TAG,$VERSION,$VERSION_MINOR,$VERSION_MAJOR}; do
+  echo ">> building ${DOCKER_REPO}:${IMAGE_TAG} (${PLATFORMS})"
+  docker buildx build \
+    --output=type=registry \
+    --platform "$PLATFORMS" \
+    --build-arg "UNIFI_VERSION=$VERSION" \
+    --build-arg "VCS_URL=$VCS_URL" \
+    --build-arg "VCS_REF=$VCS_REF" \
+    --build-arg "BUILD_DATE=$BUILD_DATE" \
+    --file "$DOCKERFILE_PATH" \
+    --tag "${DOCKER_REPO}:${IMAGE_TAG}" \
+    .
+done
+
+exit 0
