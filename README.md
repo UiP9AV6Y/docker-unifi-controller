@@ -3,6 +3,7 @@
 [docker library]: https://store.docker.com/images/openjdk
 [GPL-3.0]: http://www.gnu.org/licenses/gpl-3.0.txt
 [vendor homepage]: https://www.ubnt.com/download/unifi/default/default/unifi-5629-controller-debianubuntu-linux
+[release announcements]: https://community.ui.com/releases
 [official documentation]: https://help.ubnt.com/hc/en-us/articles/205202580-UniFi-system-properties-File-Explanation
 
 [![](https://images.microbadger.com/badges/image/uip9av6y/unifi-controller.svg)][microbadger]
@@ -112,8 +113,8 @@ information about its content refer to the
 
 # image setup
 
-the image is based on the **8-jre** tagged **openjdk** image from
-the [docker library][].
+the image is based on the **8-jre-slim-buster**
+tagged **openjdk** image from the [docker library][].
 
 # license
 
@@ -128,3 +129,21 @@ dependencies of the primary software being contained).
 it is the image user's responsibility to ensure that any use of
 this image complies with any relevant licenses for all software
 contained within.
+
+# changelog
+
+Note: this changelog tracks changes to the docker
+image, not the contained software.
+
+See Ubiquiti [release announcements][] for a list
+of software releases and their associated changes.
+
+## 2020-11-20
+
+* switch base image from **8-jre**
+  to **8-jre-slim-buster**
+
+## 2020-11-16
+
+* use buildx for image creation in preparation for
+  multi-arch images.
